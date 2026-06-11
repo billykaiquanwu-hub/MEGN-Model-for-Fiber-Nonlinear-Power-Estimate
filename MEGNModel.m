@@ -67,7 +67,7 @@ classdef MEGNModel
             list=dir(file_name);
             LL=length(list());
             if LL == 0
-                fprintf(['File ',file_name,' not found! \n Initialize MEGN model coefficients']);
+                fprintf('File %s not found!\nInitialize MEGN model coefficients\n',file_name);
                 if exist(folder_name,'dir')~=7
                     mkdir(folder_name);
                 end
