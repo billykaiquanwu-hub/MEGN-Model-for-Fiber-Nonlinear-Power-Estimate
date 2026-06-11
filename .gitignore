@@ -1,0 +1,16 @@
+# MATLAB autosaves and temporary files
+*.asv
+*.m~
+*.autosave
+
+# Generated outputs
+results/
+*.png
+*.pdf
+*.eps
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
