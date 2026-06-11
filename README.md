@@ -20,7 +20,7 @@ The demo compares the standard EGN estimate with the MEGN correction for differe
 - `calculateEGNSCI.m` - isolated baseline EGN calculation.
 - `calculateSymbolCorrelations.m` - analytical CCDM symbol-correlation calculation.
 - `etaToSNR.m` - eta-to-optimum-SNR conversion.
-- `kernel_cache/` - precomputed kernel files used to avoid repeating the slow kernel calculation.
+- `kernel_cache/` - precomputed kernel file for the demo configuration.
 
 ## Requirements
 
@@ -37,13 +37,13 @@ The demo compares the standard EGN estimate with the MEGN correction for differe
 MEGN_Demo
 ```
 
-The first run should load kernels from `kernel_cache/`. If kernels are missing for a changed parameter set, `MEGNModel` computes them and stores them for future runs.
+The first run should load the 10-span demo kernel from `kernel_cache/`. If kernels are missing for a changed parameter set, `MEGNModel` computes them and stores them for future runs.
 
 ## Notes on Kernel Caching
 
-Kernel computation is the main runtime bottleneck. Cached kernels are organized by physical link and model-memory parameters. Keeping the cache in the repository makes the minimum demo fast and reproducible for readers.
+Kernel computation is the main runtime bottleneck. The repository includes only the kernel file required by the minimum working example, where `sys.Ns = 10` and `model.tau_max = 50`. Cached kernels are organized by physical link and model-memory parameters.
 
-If you change parameters such as symbol rate, span count, or memory length, the model may create a new cache entry.
+If you change parameters such as symbol rate, span count, or memory length, the model may create a new cache entry. Longer-distance links generally require a larger memory length (`model.tau_max`) to capture more delayed symbol correlations, which also increases kernel-computation time and cache size.
 
 ## Troubleshooting
 
