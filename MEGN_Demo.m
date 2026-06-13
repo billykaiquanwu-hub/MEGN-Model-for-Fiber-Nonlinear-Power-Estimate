@@ -104,7 +104,6 @@ for mapIdx = 1:length(mappingGP)
 end
 xlabel('CCDM shaping blocklength')
 ylabel('\eta [dB (1/W^2)]')
-title('MEGN SCI reduction')
 legend
 set(gca, 'XScale', 'log');
 grid on
@@ -123,7 +122,6 @@ for mapIdx = 1:length(mappingGP)
 end
 xlabel('CCDM shaping blocklength')
 ylabel('Effective SNR [dB]')
-title('MEGN SCI reduction')
 legend
 set(gca, 'XScale', 'log');
 grid on
