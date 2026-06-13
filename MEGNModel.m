@@ -288,9 +288,6 @@ classdef MEGNModel
 
 
         %%% Calculate the NLI correction terms due to symbol dependency Cov
-        %%% Cov can be any correlation among three variables defined as
-        %%% Cov(tau1,tau2) = E(X_tau1 X_tau2) - E(X_tau1) E(X_tau2), approach
-        %%% 0 as tau2 increases
         function [eta_SCI,G_SCI] = eta_SCI_MEGN_Cal(obj,P_chn,Cov)
 
             %%% Symbol correlation statistics
@@ -428,8 +425,6 @@ classdef MEGNModel
             Rs = obj.sys_Rs;
             %%% For two energy-dependent summation
             terms = zeros([size(f1Mtx),4]);
-%             terms(:,:,1) = cos(pi/Rs*tau.*(f-f1Mtx)).^2;
-%             terms(:,:,2) = sin(pi/Rs*tau.*(f-f1Mtx)).^2;
             terms(:,:,1) = cos(pi/Rs*tau.*(f-f1Mtx)) ;
             terms(:,:,2) = sin(pi/Rs*tau.*(f-f1Mtx)) ;
 
@@ -538,7 +533,7 @@ classdef MEGNModel
             pulseSpec = pulseSpec./max(pulseSpec(:))*obj.sys_Ts; 
         end
 
-        %%% Calculate link function mu in [1] Eq.(10-12)
+        %%% Calculate link function mu
         function mu = linkFunc(obj, ftms)
             alpha = obj.sys_alpha;
             beta2 = obj.sys_beta2;
@@ -553,14 +548,12 @@ classdef MEGNModel
 
             %%% the efficiency of non-degenerate FWM occurring among three spectral
             %%% components of the signal placed at frequencies f1, f2, f3=(f1+f2-f)
-            %%% Calculate zeta in [1] Eq.(11)
             zeta = gamma*(1-exp(-2*alpha*Ls+1j*4*pi^2*beta2*Ls.*ftms))./...
                 (2*alpha-1j*4*pi^2*beta2.*ftms);
 
             %%% The factor nu relates to the coherent interference of the NLI field
             %%% contributions produced in different spans, when they are summed up at
             %%% the receiver location.
-            %%% Calculate nu in [1] Eq.(12)
             nu = sin(2*beta2*pi^2*Ls*Ns.*ftms)./...
                 sin(2*beta2*pi^2*Ls.*ftms).*...
                 exp(1j*2*beta2*pi^2*Ls*(Ns-1).*ftms);
@@ -570,7 +563,6 @@ classdef MEGNModel
 
             %%% the link function weighs the generation of NLI and depends only
             %%% on the link parameters, but not on the launched signal
-            %%% Calculate mu in [1] Eq.(10)
             mu = zeta.*nu;
             mu = reshape(mu,sz);
 

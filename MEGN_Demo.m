@@ -2,8 +2,8 @@
 % Minimal working example for the finite-memory EGN (MEGN) model.
 %
 % This demo compares the standard EGN estimate with the MEGN correction for
-% different CCDM shaping blocklengths and mapping dimensions. Kernel files
-% are loaded from kernel_cache when available.
+% different CCDM shaping blocklengths and mapping strategies (Fig. 9(b) of the paper).
+% Kernel files are loaded from kernel_cache when available.
 close all;
 clearvars;
 
