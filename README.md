@@ -58,4 +58,19 @@ matlabrc
 
 ## Citation
 
-Citation details will be added after the manuscript information is finalized.
+If you use this code, please cite:
+
+Kaiquan Wu, Gabriele Liga, Marco Secondini, Stella Civelli, Hussam Batshon, Greg Raybon, Xi Chen, and Alex Alvarado, "The Memory-Enhanced Gaussian Noise (MEGN) Model for Fiber-Optic Channels," arXiv:2604.11601, 2026. https://arxiv.org/abs/2604.11601
+
+```bibtex
+@misc{wu2026megn,
+  title = {The Memory-Enhanced Gaussian Noise (MEGN) Model for Fiber-Optic Channels},
+  author = {Wu, Kaiquan and Liga, Gabriele and Secondini, Marco and Civelli, Stella and Batshon, Hussam and Raybon, Greg and Chen, Xi and Alvarado, Alex},
+  year = {2026},
+  eprint = {2604.11601},
+  archivePrefix = {arXiv},
+  primaryClass = {eess.SP},
+  doi = {10.48550/arXiv.2604.11601},
+  url = {https://arxiv.org/abs/2604.11601}
+}
+```
