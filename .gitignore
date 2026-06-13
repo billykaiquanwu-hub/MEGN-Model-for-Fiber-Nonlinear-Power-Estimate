@@ -8,6 +8,7 @@ results/
 *.png
 *.pdf
 *.eps
+!docs/figures/*.png
 
 # OS/editor files
 .DS_Store

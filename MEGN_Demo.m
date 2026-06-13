@@ -94,6 +94,7 @@ lineStyles = {'-','-.',':'};
 figure
 yl = yline(10*log10(eta_SCI_EGN),'-.','EGN Model');
 yl.LabelHorizontalAlignment = 'left';
+yl.DisplayName = 'EGN Model';
 hold on
 for mapIdx = 1:length(mappingGP)
     legendText = [num2str(sys.Ns), ' x ', num2str(sys.Ls), ...
@@ -112,6 +113,7 @@ grid on
 figure
 yl = yline(SNR_opt_EGN,'-.','EGN Model');
 yl.LabelHorizontalAlignment = 'left';
+yl.DisplayName = 'EGN Model';
 hold on
 for mapIdx = 1:length(mappingGP)
     legendText = [num2str(sys.Ns), ' x ', num2str(sys.Ls), ...
