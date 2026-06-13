@@ -1,6 +1,6 @@
 # MEGN MATLAB Demo
 
-This repository provides a minimal MATLAB implementation of the finite-memory EGN (MEGN) model for self-channel interference correction.
+This repository provides a minimal MATLAB implementation of the finite-memory EGN (MEGN) model for fiber-optic channels.
 
 The main entry point is:
 
@@ -8,7 +8,7 @@ The main entry point is:
 MEGN_Demo
 ```
 
-The demo compares the standard EGN estimate with the MEGN correction for different CCDM shaping blocklengths and mapping dimensions. It produces two figures:
+The demo compares the standard EGN estimate with the MEGN correction for different CCDM shaping blocklengths and mapping strategies. It reproduces the calculations behind Fig. 9(b) of the accompanying arXiv paper and produces two figures:
 
 - nonlinear coefficient eta versus CCDM shaping blocklength;
 - optimum effective SNR versus CCDM shaping blocklength.
