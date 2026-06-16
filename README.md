@@ -64,7 +64,23 @@ matlabrc
 
 ## Citation
 
-If you use this code, please cite:
+If you use this code, please cite the archived software release:
+
+Kaiquan Wu, Gabriele Liga, Marco Secondini, Stella Civelli, Hussam Batshon, Greg Raybon, Xi Chen, and Alex Alvarado, "MEGN MATLAB Demo," version 1.0.0, Zenodo, 2026. https://doi.org/10.5281/zenodo.20710628
+
+```bibtex
+@software{wu2026megn_matlab_demo,
+  title = {MEGN MATLAB Demo},
+  author = {Wu, Kaiquan and Liga, Gabriele and Secondini, Marco and Civelli, Stella and Batshon, Hussam and Raybon, Greg and Chen, Xi and Alvarado, Alex},
+  year = {2026},
+  version = {1.0.0},
+  publisher = {Zenodo},
+  doi = {10.5281/zenodo.20710628},
+  url = {https://doi.org/10.5281/zenodo.20710628}
+}
+```
+
+Please also cite the accompanying paper:
 
 Kaiquan Wu, Gabriele Liga, Marco Secondini, Stella Civelli, Hussam Batshon, Greg Raybon, Xi Chen, and Alex Alvarado, "The Memory-Enhanced Gaussian Noise (MEGN) Model for Fiber-Optic Channels," arXiv:2604.11601, 2026. https://arxiv.org/abs/2604.11601
 
