@@ -1,0 +1,55 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite both the archived software release and the accompanying paper."
+type: software
+title: "MEGN MATLAB Demo"
+abstract: "Minimal MATLAB implementation of the Memory-Enhanced Gaussian Noise (MEGN) model for finite-memory nonlinear interference estimation in fiber-optic channels."
+authors:
+  - family-names: Wu
+    given-names: Kaiquan
+  - family-names: Liga
+    given-names: Gabriele
+  - family-names: Secondini
+    given-names: Marco
+  - family-names: Civelli
+    given-names: Stella
+  - family-names: Batshon
+    given-names: Hussam
+  - family-names: Raybon
+    given-names: Greg
+  - family-names: Chen
+    given-names: Xi
+  - family-names: Alvarado
+    given-names: Alex
+repository-code: "https://github.com/billykaiquanwu-hub/MEGN-Model-for-Fiber-Nonlinear-Power-Estimate"
+license: MIT
+version: "1.0.0"
+date-released: "2026-06-16"
+keywords:
+  - fiber-optic communications
+  - nonlinear interference
+  - enhanced Gaussian noise model
+  - probabilistic shaping
+  - MATLAB
+preferred-citation:
+  type: article
+  title: "The Memory-Enhanced Gaussian Noise (MEGN) Model for Fiber-Optic Channels"
+  authors:
+    - family-names: Wu
+      given-names: Kaiquan
+    - family-names: Liga
+      given-names: Gabriele
+    - family-names: Secondini
+      given-names: Marco
+    - family-names: Civelli
+      given-names: Stella
+    - family-names: Batshon
+      given-names: Hussam
+    - family-names: Raybon
+      given-names: Greg
+    - family-names: Chen
+      given-names: Xi
+    - family-names: Alvarado
+      given-names: Alex
+  year: 2026
+  doi: "10.48550/arXiv.2604.11601"
+  url: "https://arxiv.org/abs/2604.11601"
