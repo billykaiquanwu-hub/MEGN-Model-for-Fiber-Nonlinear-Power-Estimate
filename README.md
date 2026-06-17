@@ -50,17 +50,7 @@ The first run should load the 10-span demo kernel from `kernel_cache/`. If kerne
 Kernel computation is the main runtime bottleneck. The repository includes only the kernel file required by the minimum working example, where `sys.Ns = 10` and `model.tau_max = 50`. Cached kernels are organized by physical link and model-memory parameters.
 
 If you change parameters such as symbol rate, span count, or memory length, the model may create a new cache entry. Longer-distance links generally require a larger memory length (`model.tau_max`) to capture more delayed symbol correlations, which also increases kernel-computation time and cache size.
-
-## Troubleshooting
-
-If MATLAB cannot find core functions such as `addpath`, `num2str`, or `fullfile`, reset the MATLAB path:
-
-```matlab
-restoredefaultpath
-rehash toolboxcache
-savepath
-matlabrc
-```
+ 
 
 ## Citation
 
