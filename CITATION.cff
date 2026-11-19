@@ -21,7 +21,8 @@ authors:
   - family-names: Alvarado
     given-names: Alex
 repository-code: "https://github.com/billykaiquanwu-hub/MEGN-Model-for-Fiber-Nonlinear-Power-Estimate"
-url: "https://github.com/billykaiquanwu-hub/MEGN-Model-for-Fiber-Nonlinear-Power-Estimate/releases/tag/v1.0.1"
+doi: "10.5281/zenodo.24359184"
+url: "https://doi.org/10.5281/zenodo.24359184"
 license: MIT
 version: "1.0.1"
 date-released: "2026-11-19"

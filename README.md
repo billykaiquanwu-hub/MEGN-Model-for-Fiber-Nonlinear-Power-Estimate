@@ -67,19 +67,19 @@ The normalization changes cancel: the kernel factor of four and polarization fac
 
 ## Citation
 
-The current GitHub release is [v1.0.1](https://github.com/billykaiquanwu-hub/MEGN-Model-for-Fiber-Nonlinear-Power-Estimate/releases/tag/v1.0.1), which synchronizes the code with the paper formulas. The citation below identifies the original archived v1.0.0 release; use the version-specific DOI of the release used in your work once its Zenodo archive is available.
+If you use this code, please cite the archived software release:
 
-Kaiquan Wu, Gabriele Liga, Marco Secondini, Stella Civelli, Hussam Batshon, Greg Raybon, Xi Chen, and Alex Alvarado, "MEGN MATLAB Demo," version 1.0.0, Zenodo, 2026. https://doi.org/10.5281/zenodo.20710628
+Kaiquan Wu, Gabriele Liga, Marco Secondini, Stella Civelli, Hussam Batshon, Greg Raybon, Xi Chen, and Alex Alvarado, "MEGN MATLAB Demo," version 1.0.1, Zenodo, 2026. https://doi.org/10.5281/zenodo.24359184
 
 ```bibtex
 @software{wu2026megn_matlab_demo,
   title = {MEGN MATLAB Demo},
   author = {Wu, Kaiquan and Liga, Gabriele and Secondini, Marco and Civelli, Stella and Batshon, Hussam and Raybon, Greg and Chen, Xi and Alvarado, Alex},
   year = {2026},
-  version = {1.0.0},
+  version = {1.0.1},
   publisher = {Zenodo},
-  doi = {10.5281/zenodo.20710628},
-  url = {https://doi.org/10.5281/zenodo.20710628}
+  doi = {10.5281/zenodo.24359184},
+  url = {https://doi.org/10.5281/zenodo.24359184}
 }
 ```
 
