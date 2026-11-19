@@ -25,9 +25,9 @@ classdef MEGNModel
         model_f0      % specify the Evaluated frequency points and the spectrum
         model_tau_max % sample number for evaluated PSD f
 
-        model_kn_phi_1      % old kernels for one identical time index
         model_kn_phi_2      % old kernels for two identical time index
         model_kn_phi_3      % old kernels for two identical time index
+        model_kn_phi_4      % old kernels for one identical time index
         model_kn_chi_1      % kernels for two distinct time groups
         model_kn_chi_2      % kernels for two distinct time groups
         model_kn_chi_3      % kernels for two distinct time groups
@@ -77,13 +77,13 @@ classdef MEGNModel
             end 
 
 
-            load(file_name,'f0','kn_phi_1','kn_phi_2','kn_phi_3','kn_chi_1','kn_chi_2',...
+            load(file_name,'f0','kn_phi_2','kn_phi_3','kn_phi_4','kn_chi_1','kn_chi_2',...
                 'kn_chi_3','kn_xi_1','kn_xi_2','kn_psi_1','kn_psi_2','kn_psi_3')
             
             obj.model_f0           = f0;
-            obj.model_kn_phi_1     = kn_phi_1;
             obj.model_kn_phi_2     = kn_phi_2;
             obj.model_kn_phi_3     = kn_phi_3;
+            obj.model_kn_phi_4     = kn_phi_4;
             obj.model_kn_chi_1     = kn_chi_1;
             obj.model_kn_chi_2     = kn_chi_2;
             obj.model_kn_chi_3     = kn_chi_3;
@@ -134,7 +134,7 @@ classdef MEGNModel
             spec2Mtx = obj.RRC_spectra(f2Mtx);
 
             %%% Evaluated coefficients at different frequency points 
-            kn_phi_1 = zeros(1,obj.model_Nf);
+            kn_phi_4 = zeros(1,obj.model_Nf);
             kn_phi_2 = zeros(1,obj.model_Nf);
             kn_phi_3 = zeros(1,obj.model_Nf);
             kn_chi_1 = zeros(obj.model_tau_max,obj.model_Nf);
@@ -175,11 +175,11 @@ classdef MEGNModel
                 specBtVec = spec1Mtx.*spec2Mtx.*conj(spec_fcmb1).*mu_vec1;
 
                 %%% (1) EGN kernels
-                kn_phi_1(idx) = 16/81*obj.sys_Rs*abs(mean(mean(specBtVec))*obj.sys_Rs^2)^2;
-                kn_phi_2(idx) = 16/81*obj.sys_Rs^2*...
+                kn_phi_4(idx) = 64/81*obj.sys_Rs*abs(mean(mean(specBtVec))*obj.sys_Rs^2)^2;
+                kn_phi_2(idx) = 64/81*obj.sys_Rs^2*...
                     mean(abs(spec1Mtx(:,1)).^2.*...
                     abs(mean(spec2Mtx.*conj(spec_fcmb1).*mu_vec1,2)*obj.sys_Rs).^2)*obj.sys_Rs;
-                kn_phi_3(idx) = 16/81*obj.sys_Rs^2*...
+                kn_phi_3(idx) = 64/81*obj.sys_Rs^2*...
                     mean(abs(spec1Mtx(:,1)).^2.*...
                     abs(mean(spec2Mtx.*spec_fcmb2.*mu_vec2,2)*obj.sys_Rs).^2)*obj.sys_Rs;
 
@@ -211,7 +211,7 @@ classdef MEGNModel
                 fprintf('\b|\n');
             end 
   
-            save(file_name,'f0','kn_phi_1','kn_phi_2','kn_phi_3','kn_chi_1','kn_chi_2',...
+            save(file_name,'f0','kn_phi_4','kn_phi_2','kn_phi_3','kn_chi_1','kn_chi_2',...
                 'kn_chi_3','kn_xi_1','kn_xi_2','kn_psi_1','kn_psi_2','kn_psi_3')
         end
 
@@ -240,8 +240,8 @@ classdef MEGNModel
 
                 %%% XP: cross-pol. interactions
                 %%%%%% Pure Single Energy Correlation 
-                Kn.K24_XP(idx) = 3.*obj.model_kn_phi_1(idx);  
-                Kn.K22_XP(idx) = -12.*obj.model_kn_phi_1(idx)...
+                Kn.K24_XP(idx) = 3.*obj.model_kn_phi_4(idx);  
+                Kn.K22_XP(idx) = -12.*obj.model_kn_phi_4(idx)...
                     + 5.*obj.model_kn_phi_2(idx)...
                     + 1.*obj.model_kn_phi_3(idx); 
 
@@ -288,7 +288,7 @@ classdef MEGNModel
 
 
         %%% Calculate the NLI correction terms due to symbol dependency Cov
-        function [eta_SCI,G_SCI] = eta_SCI_MEGN_Cal(obj,P_chn,Cov)
+        function [eta_SCI,G_SCI] = eta_SCI_MEGN_Cal(obj,P_tot,Cov)
 
             %%% Symbol correlation statistics
             tau_max = obj.model_tau_max;
@@ -338,29 +338,29 @@ classdef MEGNModel
 
 
                 %%% SPT: self-pol. temporal interactions
-                G_SCI.corr_SPT_2D(idx) = ...
+                G_SCI.corr_SPT_2D(idx) = 2*(...
                     sum(Ex2.*Cov22_X(1:tau_max).*obj.model_Kn.K22_SPT(:,idx))...
-                    + sum(Cov24_X(1:tau_max).*obj.model_Kn.K24_SPT(:,idx));
+                    + sum(Cov24_X(1:tau_max).*obj.model_Kn.K24_SPT(:,idx)) );
                 if obj.model_Kn.flagAppxOnly == 0
-                    G_SCI.corr_SPT_3D(idx) = ...
-                        sum(sum(Cov222_Cmb_X.*obj.model_Kn.K222_SPT(:,:,idx)));
+                    G_SCI.corr_SPT_3D(idx) = 2*(...
+                        sum(sum(Cov222_Cmb_X.*obj.model_Kn.K222_SPT(:,:,idx))) );
                 else
                     G_SCI.corr_SPT_3D(idx) = 0;
                 end
 
                 %%% XP: cross-pol. interactions
-                G_SCI.corr_XP_1D(idx) = Ex2.*Cov22_XY_0tau.*obj.model_Kn.K22_XP(idx)...
-                    + Cov24_XY_0tau.*obj.model_Kn.K24_XP(idx);
+                G_SCI.corr_XP_1D(idx) = 2*( Ex2.*Cov22_XY_0tau.*obj.model_Kn.K22_XP(idx)...
+                    + Cov24_XY_0tau.*obj.model_Kn.K24_XP(idx) );
 
                 %%% XPT: self-pol. temporal interactions
-                G_SCI.corr_XPT_2D(idx) = ... 
+                G_SCI.corr_XPT_2D(idx) = 2*(... 
                     + sum(Ex2.*Cov22_XY(1:tau_max).*obj.model_Kn.K22_XPT(:,idx))...
                     + sum(Cov24_XY(1:tau_max).*obj.model_Kn.K24_XPT(:,idx))...
                     + sum( ( Cov222_XY_1tau(1:tau_max) - Ex2.*Cov22_XY_0tau ) ...
-                    .*obj.model_Kn.K222_XPT_1tau(:,idx));
+                    .*obj.model_Kn.K222_XPT_1tau(:,idx)) );
                 if obj.model_Kn.flagAppxOnly == 0
-                    G_SCI.corr_XPT_3D(idx) = ...
-                        sum(sum(Cov222_Cmb_XY.*obj.model_Kn.K222_XPT(:,:,idx)));
+                    G_SCI.corr_XPT_3D(idx) = 2*(...
+                        sum(sum(Cov222_Cmb_XY.*obj.model_Kn.K222_XPT(:,:,idx))) );
                 else
                     G_SCI.corr_XPT_3D(idx) = 0;
                 end
@@ -369,26 +369,26 @@ classdef MEGNModel
 
             
             %%%  times 2 because of double pol effects see ref.[1] (41) (44) 
-            eta_SCI.corr_SPT_2D = mean(G_SCI.corr_SPT_2D)*obj.sys_Rs/P_chn^3;
-            eta_SCI.corr_SPT_3D = mean(G_SCI.corr_SPT_3D)*obj.sys_Rs/P_chn^3;
-            eta_SCI.corr_XPT_2D = mean(G_SCI.corr_XPT_2D)*obj.sys_Rs/P_chn^3;
-            eta_SCI.corr_XPT_3D = mean(G_SCI.corr_XPT_3D)*obj.sys_Rs/P_chn^3;
-            eta_SCI.corr_XP_1D = mean(G_SCI.corr_XP_1D)*obj.sys_Rs/P_chn^3;
+            eta_SCI.corr_SPT_2D = mean(G_SCI.corr_SPT_2D)*obj.sys_Rs/P_tot^3;
+            eta_SCI.corr_SPT_3D = mean(G_SCI.corr_SPT_3D)*obj.sys_Rs/P_tot^3;
+            eta_SCI.corr_XPT_2D = mean(G_SCI.corr_XPT_2D)*obj.sys_Rs/P_tot^3;
+            eta_SCI.corr_XPT_3D = mean(G_SCI.corr_XPT_3D)*obj.sys_Rs/P_tot^3;
+            eta_SCI.corr_XP_1D = mean(G_SCI.corr_XP_1D)*obj.sys_Rs/P_tot^3;
             
             %%%  approximate version without double delay summations
             G_SCI.corr_apprx = G_SCI.corr_SPT_2D + G_SCI.corr_XPT_2D+ G_SCI.corr_XP_1D; 
-            eta_SCI.corr_apprx = mean(G_SCI.corr_apprx)*obj.sys_Rs/P_chn^3;
+            eta_SCI.corr_apprx = mean(G_SCI.corr_apprx)*obj.sys_Rs/P_tot^3;
             
             %%%  exact version with double delay summations
             G_SCI.corr = G_SCI.corr_apprx +G_SCI.corr_SPT_3D +  G_SCI.corr_XPT_3D;
-            eta_SCI.corr = mean(G_SCI.corr)*obj.sys_Rs/P_chn^3;
+            eta_SCI.corr = mean(G_SCI.corr)*obj.sys_Rs/P_tot^3;
 
 
         end
 
 
         %% MEGN model correction helpers
-        %%% Calculate spectrum summation in ); 
+        %%% Calculate kernels over spectrum summation; 
 
         function [kn_chi_1,kn_chi_2,kn_chi_3] = specSumCal2_1(obj,f,specBtVec,f1Mtx,f2Mtx,tau)
 
@@ -410,13 +410,13 @@ classdef MEGNModel
 
             %%% Typical group kn_chi_1
             coffs = [1,-1,0,0,0,0];
-            kn_chi_1 = 32/81*Rs*sum(specSumVec2.*coffs); 
+            kn_chi_1 = 128/81*Rs*sum(specSumVec2.*coffs); 
             %%% Typical group kn_chi_2
             coffs = [0,0,1,1,0,0];
-            kn_chi_2 = 32/81*Rs*sum(specSumVec2.*coffs); 
+            kn_chi_2 = 128/81*Rs*sum(specSumVec2.*coffs); 
             %%% Typical group kn_chi_3
             coffs = [0,0,0,0,1,1];
-            kn_chi_3 = 32/81*Rs*sum(specSumVec2.*coffs); 
+            kn_chi_3 = 128/81*Rs*sum(specSumVec2.*coffs); 
         end
  
 
@@ -431,12 +431,12 @@ classdef MEGNModel
             terms(:,:,3) = cos(2*pi/Rs*tau.*f2Mtx);
             terms(:,:,4) = sin(2*pi/Rs*tau.*f2Mtx);  
 
-            kn_xi_1 = 32/81*Rs^2* ( mean(abs(spec1Mtx(:,1).*terms(:,1,1)).^2.* ...
+            kn_xi_1 = 128/81*Rs^2* ( mean(abs(spec1Mtx(:,1).*terms(:,1,1)).^2.* ...
                abs(mean(spec2Mtx.*conj(spec_fcmb1).*mu_vec1,2)*Rs).^2)*Rs ...
                - mean(abs(spec1Mtx(:,1).*terms(:,1,2)).^2.* ...
                abs(mean(spec2Mtx.*conj(spec_fcmb1).*mu_vec1,2)*Rs).^2)*Rs  );
 
-            kn_psi_1 = 32/81*Rs^2* ( mean(abs(spec1Mtx(:,1)).^2.* ...
+            kn_psi_1 = 128/81*Rs^2* ( mean(abs(spec1Mtx(:,1)).^2.* ...
                abs(mean(spec2Mtx.*conj(spec_fcmb1).*mu_vec1.*terms(:,:,3),2)*Rs).^2)*Rs ...
                + mean(abs(spec1Mtx(:,1)).^2.* ...
                abs(mean(spec2Mtx.*conj(spec_fcmb1).*mu_vec1.*terms(:,:,4),2)*Rs).^2)*Rs  );
@@ -451,7 +451,7 @@ classdef MEGNModel
             terms(:,:,1) = cos(2*pi/Rs*tau.*(f1Mtx-f2Mtx+f));
             terms(:,:,2) = sin(2*pi/Rs*tau.*(f1Mtx-f2Mtx+f));   
 
-            kn_psi_2 = 32/81*Rs^2* ( mean(abs(spec1Mtx(:,1)).^2.* ...
+            kn_psi_2 = 128/81*Rs^2* ( mean(abs(spec1Mtx(:,1)).^2.* ...
                abs(mean(spec2Mtx.*conj(spec_fcmb2).*mu_vec2.*terms(:,:,1),2)*Rs).^2)*Rs ...
                + mean(abs(spec1Mtx(:,1)).^2.* ...
                abs(mean(spec2Mtx.*conj(spec_fcmb2).*mu_vec2.*terms(:,:,2),2)*Rs).^2)*Rs  );
@@ -496,10 +496,10 @@ classdef MEGNModel
 
             %%% Typical group L3a
             coffs =  [1,-1,-1,1,-1,-1,1,-1,-1,0,0,0,0,0,0];
-            kn_xi_2 = 16/81*Rs*sum(specSumVec3.*coffs);  
+            kn_xi_2 = 64/81*Rs*sum(specSumVec3.*coffs);  
             %%% Typical group L3b
             coffs = [0,0,0,0,0,0,0,0,0,1,1,1,1,1,1];
-            kn_psi_3 = 16/81*Rs*sum(specSumVec3.*coffs); 
+            kn_psi_3 = 64/81*Rs*sum(specSumVec3.*coffs); 
 
 
         end

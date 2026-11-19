@@ -43,7 +43,8 @@ Ea4 = sum(Pamp .* ampSet.^4);
 Ea6 = sum(Pamp .* ampSet.^6);
 
 Ex2 = 2 * Ea2;
-P_chn = Ex2;
+P_chn = Ex2; % per-polarization launch power
+P_tot  = 2*P_chn;% total launch power 
 Ex4 = 2 * Ea4 + 2 * Ea2^2;
 Ex6 = 2 * Ea6 + 6 * Ea4 * Ea2;
 Phi  = Ex4/Ex2^2-2;
@@ -51,7 +52,7 @@ Psi  = Ex6/Ex2^3-9*Ex4/Ex2^2+12;
 
 %% Baseline EGN calculation
 f0 = sort(sys.Rs.*linspace(0,1,401)-0.5*sys.Rs);
-[eta_SCI_EGN,~,~,~] = calculateEGNSCI(f0,Phi,Psi,400,...
+[eta_SCI_EGN,~,~,~] = calculateEGNSCI(P_chn,f0,Phi,Psi,400,...
     sys.Ts,sys.rollOff,sys.Rs,sys.alpha,...
     sys.beta2,sys.gamma,sys.Ls,sys.Ns);
 
@@ -72,7 +73,7 @@ for mapIdx = 1:length(mappingGP)
 
         fprintf("  Applying MEGN correction... ")
         tic
-        [eta_SCI,~] = megnModel.eta_SCI_MEGN_Cal(P_chn,Cov);
+        [eta_SCI,~] = megnModel.eta_SCI_MEGN_Cal(P_tot,Cov);
         toc
 
         eta_SCI_MEGN_Corr(blkIdx,mapIdx) = eta_SCI.corr;

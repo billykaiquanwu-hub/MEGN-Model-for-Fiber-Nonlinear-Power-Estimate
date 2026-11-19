@@ -1,4 +1,4 @@
-function [eta_SCI_EGN,eta_SCI_GN,G_SCI_EGN,G_SCI_GN] = calculateEGNSCI(f0,Phi,Psi,Nsmpf1f2,T,rollOff,Rs,alpha,beta2,gamma,Ls,Ns)
+function [eta_SCI_EGN,eta_SCI_GN,G_SCI_EGN,G_SCI_GN] = calculateEGNSCI(P_chn,f0,Phi,Psi,Nsmpf1f2,T,rollOff,Rs,alpha,beta2,gamma,Ls,Ns)
 %CALCULATEEGNSCI Calculate baseline EGN/GN SCI coefficients.
 %
 % Inputs follow the notation used in MEGN_Demo.m. Rs is expressed in TBaud.
@@ -11,10 +11,11 @@ f2Mtx = repmat(Rs.*linspace(0,1,f2Num)-0.5*Rs.*ones(1,f2Num),f1Num,1);
 spec1Mtx = RRC_spectra(f1Mtx,T,rollOff);
 spec2Mtx = RRC_spectra(f2Mtx,T,rollOff);
 
-[G_SCI_EGN,G_SCI_GN] = G_SCI_Cal(f0,f1Mtx,f2Mtx,spec1Mtx,spec2Mtx,T,rollOff,Phi,Psi,Rs,alpha,beta2,gamma,Ls,Ns);
+[G_SCI_EGN,G_SCI_GN] = G_SCI_Cal(P_chn,f0,f1Mtx,f2Mtx,spec1Mtx,spec2Mtx,T,rollOff,Phi,Psi,Rs,alpha,beta2,gamma,Ls,Ns);
 
-eta_SCI_EGN = mean(G_SCI_EGN)*Rs;
-eta_SCI_GN = mean(G_SCI_GN)*Rs;
+P_tot  = 2*P_chn;% total launch power 
+eta_SCI_EGN = mean(G_SCI_EGN)*Rs/(P_tot^3);
+eta_SCI_GN = mean(G_SCI_GN)*Rs/(P_tot^3);
 end
 
 function [pulseSpec] = RC_spectra(freq_vec,T,rollOff)
@@ -80,26 +81,28 @@ for idx = 1:Nsmpf
     ftms = (f1Mtx-f2Mtx).*(f1Mtx-2.*f2Mtx+f);
     mu_vec2 = linkFunc(ftms,alpha,beta2,gamma,Ls,Ns);
 
-    ka1(idx) = 16/27*Rs^3*...
+    phi1 = 64/27*Rs^3*...
         mean(mean(abs(spec1Mtx).^2.*abs(spec2Mtx).^2.*...
         abs(spec_fcmb1).^2.*argOutA.*abs(mu_vec1).^2))*Rs^2;
+    ka1(idx) = phi1;
 
-    ka21 = 80/81*Rs^2*...
+    phi2 = 64/81*Rs^2*...
         mean(abs(spec1Mtx(:,1)).^2.*...
-        abs(mean(spec2Mtx.*conj(spec_fcmb1).*argOutA.*mu_vec1,2)*Rs).^2)*Rs;
-    ka22 = 16/81*Rs^2*...
+        abs(mean(spec2Mtx.*conj(spec_fcmb1).*argOutA.*mu_vec1,2)*Rs).^2)*Rs; 
+    phi3 = 64/81*Rs^2*...
         mean(abs(spec1Mtx(:,1)).^2.*...
         abs(mean(spec2Mtx.*spec_fcmb2.*argOutB.*mu_vec2,2)*Rs).^2)*Rs;
-    ka2(idx) = ka21 + ka22;
+    ka2(idx) = 5*phi2 + phi3;
 
-    ka3(idx) = 16/81*Rs*...
+    phi4 = 64/81*Rs*...
         abs(mean(mean(spec1Mtx.*spec2Mtx.*conj(spec_fcmb1).*argOutA.*mu_vec1))*Rs^2)^2;
+    ka3(idx) =  phi4;
 end
 end
 
-function [G_SCI_EGN,G_SCI_GN] = G_SCI_Cal(f0,f1Mtx,f2Mtx,spec1Mtx,spec2Mtx,T,rollOff,Phi,Psi,Rs,alpha,beta2,gamma,Ls,Ns)
+function [G_SCI_EGN,G_SCI_GN] = G_SCI_Cal(P_chn,f0,f1Mtx,f2Mtx,spec1Mtx,spec2Mtx,T,rollOff,Phi,Psi,Rs,alpha,beta2,gamma,Ls,Ns)
 [ka1,ka2,ka3] = kaCal(f0,f1Mtx,f2Mtx,spec1Mtx,spec2Mtx,T,rollOff,Rs,alpha,beta2,gamma,Ls,Ns);
 
-G_SCI_EGN = (ka1+Phi.*ka2+Psi.*ka3);
-G_SCI_GN = ka1;
+G_SCI_EGN = 2*(ka1+Phi.*ka2+Psi.*ka3)*P_chn^3;
+G_SCI_GN = 2*ka1*P_chn^3;
 end
